@@ -1,9 +1,11 @@
 "use client"
 
-import { StudentsTable } from "@/components/StudentsTable";
-import { StudentsTableRow } from "@/components/StudentsTableRow";
 import { students } from "@/data/students";
 import { ReactNode } from "react";
+import { StudentsTable } from "@/components/StudentsTable";
+import { StudentsTableRow } from "@/components/StudentsTableRow";
+import { Button } from "@/components/Button";
+import { Counter } from "@/components/Counter";
 
 const Page = () => {
     const studentsArray: ReactNode[] = [];
@@ -24,6 +26,8 @@ const Page = () => {
             <StudentsTable students={students}>
                 {studentsArray}
             </StudentsTable>
+            <Button onClick={() => alert("Olá")} label={"Clique aqui"}></Button>
+            <Counter></Counter>
         </div>
     );
 }
