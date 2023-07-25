@@ -10,7 +10,7 @@ export const Counter = () => {
     }
 
     return (
-        <div className="bg-white w-max flex items-center justify-evenly p-2 rounded mt-4">
+        <div className="bg-white w-max flex items-center justify-evenly p-2 rounded">
             <div onClick={handleDecrement} className="flex cursor-pointer items-center justify-center p-4 w-10 h-10 bg-red-800 text-white rounded">-</div>
             <div className="text-black mx-4 text-2xl">{count}</div>
             <div onClick={handleIncrement} className="flex cursor-pointer items-center justify-center p-4 w-10 h-10 bg-red-800 text-white rounded">+</div>
