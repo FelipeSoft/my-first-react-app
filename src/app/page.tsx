@@ -12,8 +12,60 @@ import { FrequentlyAskedQuestion } from "@/components/faq/FrequentlyAskedQuestio
 import { FullNameForm } from "@/components/forms/FullNameForm";
 import { Input } from "@/components/forms/inputs/Input";
 import { Person } from "@/types/Person";
+import { TaskList } from "@/components/features/TaskList";
+import { Task } from "@/components/features/Task";
+import { TaskType } from "@/types/TaskType";
+import { Linden_Hill } from "next/font/google";
 
 const Page = () => {
+    const [ fullName, setFullName ] = useState<Person>({name: "", lastName: ""});
+    const [ taskInput, setTaskInput ] = useState<string>("");
+    const [ list, setList ] = useState<TaskType[]>([
+        {id: 1, title: "Teste", done: false}
+    ]);
+
+    const auto_increment = (array: any[]) => {
+        if (array.length === 0) {
+            return null; 
+        }
+        
+        let max = array[0].id;
+        for (let i = 1; i < array.length; i++) {
+            if (array[i].id > max) {
+                max = array[i].id;
+            }
+        }
+    
+        return max;
+    }
+
+    const handleClick = () => {
+        setFullName({name: "", lastName: ""});  
+    }
+
+    const handleAdd = () => {
+        if (taskInput.trim() === "") return;
+
+        setList([...list, {id: auto_increment(list) + 1, title: taskInput, done: false}]);
+        setTaskInput("");
+    }
+
+    const removeItem = (id: number) => {
+        setList(list.filter((element => element.id !== id )));
+    }
+
+    const toggleItem = (id: number) => {
+        let newList = [...list];
+        for(let i in newList){
+            if(newList[i].id === id){
+                newList[i].done = !newList[i].done;
+            }
+        }
+
+        setList(newList);
+    }
+
+
     const studentsArray: ReactNode[] = [];
     students.map(element => {
         studentsArray.push(
@@ -39,17 +91,12 @@ const Page = () => {
         );
     });
 
-    const [fullName, setFullName] = useState<Person>({name: "", lastName: ""});
-    const handleClick = () => {
-        setFullName({name: "", lastName: ""});
-    }
-
     return (
         <div className="container mx-auto flex flex-col justify-start">
             <StudentsTable students={students}>
                 {studentsArray}
             </StudentsTable>
-            <div className="grid grid-cols-4 gap-5 w-full place-items-center">
+            <div className="grid grid-cols-2 gap-5 w-full place-items-start justify-items-center">
                 <div className="flex items-center justify-center flex-col gap-4">
                     <Button onClick={() => alert("Olá")} label={"Clique aqui"} backgroundColor="bg-slate-800"></Button>
                     <Counter></Counter>
@@ -63,6 +110,18 @@ const Page = () => {
                 <FrequentlyAskedQuestionsList>
                     {faqArray}
                 </FrequentlyAskedQuestionsList>
+                <TaskList 
+                    onChange={(e) => setTaskInput(e.target.value)}
+                    onClick={handleAdd} 
+                    value={taskInput}
+                >
+                    <p>Itens na lista: {list.length}</p>
+                    {   
+                        list.map((element) => {
+                            return <Task id={element.id} toggleItem={() => toggleItem(element.id)} key={element.id} onClick={() => removeItem(element.id)} title={element.title} done={element.done}></Task>
+                        })
+                    }
+                </TaskList>
             </div>
         </div>
     );

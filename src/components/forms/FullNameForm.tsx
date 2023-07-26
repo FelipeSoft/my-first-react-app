@@ -7,7 +7,7 @@ type Props = {
 
 export const FullNameForm = ({ children, action }: Props) => {
     return (
-        <form action={action} onSubmit={e => e.preventDefault()}>
+        <form action={action} onSubmit={e => e.preventDefault()} className="flex flex-col">
             {children}
         </form>
     );
